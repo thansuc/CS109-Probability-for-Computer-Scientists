@@ -1,0 +1,342 @@
+\documentclass[12pt]{article}
+
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}  % math symbols
+\usepackage{mathdots}
+\usepackage[pdftex]{graphicx}
+\usepackage{fancyhdr}
+%\usepackage[margin=1in]{geometry}
+\usepackage{multicol}
+\usepackage{bm}
+\usepackage{listings}
+\PassOptionsToPackage{usenames,dvipsnames}{color}  %% Allow color names
+\usepackage{pdfpages}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+\usepackage{framed}
+\usepackage{wasysym}
+\usepackage[thinlines]{easytable}
+\usepackage{wrapfig}  % in case you want to use a figure
+\usepackage{hyperref} % add hyper links
+\usepackage{minted}
+
+% This package controls the margins of the page.
+\usepackage[top=1in, bottom=1in, left=0.8in, right=1in]{geometry}
+
+\usepackage{multicol} % in case you want to use multiple columns
+\setlength{\columnsep}{0.1pc}
+
+% document headers!
+\title{CS 109: Introduction to Probability for Computer Scientists\\Problem Set \#2}
+\author{author} % Replace with your own name!!!
+\date{\today} % today does the right thing
+
+\lhead{author} % Replace with your own name!!!
+\chead{Problem Set \#2}
+\rhead{\today}
+
+\newcommand{\abs}[1]{\lvert #1 \rvert}
+\newcommand{\absfit}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\eval}[3]{\left[#1\right]_{#2}^{#3}}
+\renewcommand{\(}{\left(}
+\renewcommand{\)}{\right)}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\pd}[1]{\frac{\partial}{\partial #1}}
+\newcommand{\inner}[1]{\langle#1\rangle}
+\newcommand{\cond}{\bigg|}
+\newcommand{\rank}[1]{\mathbf{rank}(#1)}
+\newcommand{\range}[1]{\mathbf{range}(#1)}
+\newcommand{\nullsp}[1]{\mathbf{null}(#1)}
+\newcommand{\repr}[1]{\left\langle#1\right\rangle}
+
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Tr}{\mathbf{Tr}}
+\DeclareMathOperator{\diag}{\mathbf{diag}}
+\DeclareMathOperator{\dist}{\mathbf{dist}}
+\DeclareMathOperator{\prob}{\mathbf{prob}}
+\DeclareMathOperator{\dom}{\mathbf{dom}}
+\DeclareMathOperator{\E}{\mathbf{E}}
+\DeclareMathOperator{\R}{\mathbb{R}}
+\DeclareMathOperator{\var}{\mathbf{var}}
+\DeclareMathOperator{\quartile}{\mathbf{quartile}}
+\DeclareMathOperator{\conv}{\mathbf{conv}}
+\DeclareMathOperator{\VC}{VC}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\Ber}{Bernoulli}
+\DeclareMathOperator{\NP}{\mathbf{NP}}
+\DeclareMathOperator{\coNP}{\mathbf{coNP}}
+\DeclareMathOperator{\TIME}{\mathsf{TIME}}
+\DeclareMathOperator{\polytime}{\mathbf{P}}
+\DeclareMathOperator{\PH}{\mathbf{PH}}
+\DeclareMathOperator{\SIZE}{\mathbf{SIZE}}
+\DeclareMathOperator{\ATIME}{\mathbf{ATIME}}
+\DeclareMathOperator{\SPACE}{\mathbf{SPACE}}
+\DeclareMathOperator{\ASPACE}{\mathbf{ASPACE}}
+\DeclareMathOperator{\NSPACE}{\mathbf{NSPACE}}
+\DeclareMathOperator{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\N}{\mathbb{N}}
+\DeclareMathOperator{\EXP}{\mathbf{EXP}}
+\DeclareMathOperator{\NEXP}{\mathbf{NEXP}}
+\DeclareMathOperator{\NTIME}{\mathbf{NTIME}}
+\DeclareMathOperator{\DTIME}{\mathbf{DTIME}}
+\DeclareMathOperator{\poly}{poly}
+\DeclareMathOperator{\BPP}{\mathbf{BPP}}
+\DeclareMathOperator{\ZPP}{\mathbf{ZPP}}
+\DeclareMathOperator{\RP}{\mathbf{RP}}
+\DeclareMathOperator{\coRP}{\mathbf{coRP}}
+\DeclareMathOperator{\BPL}{\mathbf{BPL}}
+\DeclareMathOperator{\IP}{\mathbf{IP}}
+\DeclareMathOperator{\PSPACE}{\mathbf{PSPACE}}
+\DeclareMathOperator{\NPSPACE}{\mathbf{NPSPACE}}
+\DeclareMathOperator{\SAT}{\mathsf{SAT}}
+\DeclareMathOperator{\NL}{\mathbf{NL}}
+\DeclareMathOperator{\PCP}{\mathbf{PCP}}
+\DeclareMathOperator{\PP}{\mathbf{PP}}
+\DeclareMathOperator{\cost}{cost}
+\let\Pr\relax
+\DeclareMathOperator*{\Pr}{\mathbf{Pr}}
+
+\theoremstyle{definition}
+\newtheorem*{answer}{Answer}
+
+\definecolor{shadecolor}{gray}{0.95}
+
+\setlength{\parindent}{0pt}
+
+\pagestyle{fancy}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+% begin the document
+\begin{document}
+
+% actually insert the title.
+\maketitle
+  
+\begin{enumerate}
+    %1
+    \item Say in Silicon Valley, 36\% of engineers program in Java and 24\% of the engineers who program in Java also program in C++. Furthermore, 33\% of engineers program in C++.
+    \begin{enumerate}
+        \item What is the probability that a randomly selected engineer programs in Java and C++?
+        \item What is the conditional probability that a randomly selected engineer programs in Java given that they program in C++?
+    \end{enumerate}
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \pagebreak
+    %2
+    \item Five servers are located in a computer cluster. After one year, each server independently is still working with probability $p$, and otherwise fails (with probability $1-p$).
+    \begin{enumerate}
+        \item What is the probability that \textit{at least} 1 server is still working after one year?
+        \item What is the probability that \textit{exactly} 3 servers are still working after one year?
+        \item What is the probability that \textit{at least} 3 servers are still working after one year?
+    \end{enumerate}
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \pagebreak
+    %3
+    \item To start game of ultimate frisbee both teams flip a frisbee. Each frisbee either lands ``heads''
+(facing down) or ``tails'' (facing up). Your team gets to start if the two frisbees are facing the
+same direction: either the frisbees are both heads or both tails. Otherwise your opponent starts.
+Let p be the probability a frisbee lands heads. Assume that both frisbees have the same value
+for p and that each flip is independent.
+\begin{enumerate}
+    \item If it turns out that $p = 0.5$, what is the probability that you start? Give a number.
+    \item If it turns out that $p = 0.8$, what is the probability that you start? Give a number.
+    \item What is the probability that your team starts? Express your answer in terms of p
+\end{enumerate}
+
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \pagebreak
+    %4
+    \item A website wants to detect if a visitor is a robot. They give the visitor three CAPTCHA tests that are hard for robots, but easy for humans. If the visitor fails in one of the tests, they are flagged as a robot. The probability that a human succeeds at a single test is 0.95, while a robot only succeeds with probability 0.3. Assume all tests are independent.
+    \begin{enumerate}
+        \item If a robot visits the website, what is the probability they get flagged?
+        \item If a visitor is human, what is the probability they get flagged?
+        \item The fraction of visitors on the site that are robots is 1/10. Suppose a visitor gets flagged. What is the probability that visitor is a robot?
+    \end{enumerate}
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \pagebreak
+    %5
+    \item Recall the game set-up in the ``St. Petersburg's paradox'' discussed in class: there is a fair coin which comes up ``heads'' with probability $p$ = 0.5. The coin is flipped repeatedly until the first ``tails'' appears. Let N = number of coin flips before the first ``tails'' appears (i.e., N = the number of consecutive ``heads'' that appear). Given that no one really has infinite money to offer as payoff for the game, consider a variant of the game where you win MIN(\$$2^N$, X), where X is the maximum amount that the game provider will pay you after playing. Compute the expected payoff of the game for the following values of X. Show your work.
+    \begin{enumerate}
+        \item X = \$10.
+        \item X = \$500.
+        \item X = \$8192.
+    \end{enumerate}
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \pagebreak
+    %6
+    \item A bit string of length $n$ is generated randomly such that each bit is generated independently with probability $p$ that the bit is a 1 (and 0 otherwise). How large does $n$ need to be (in terms of $p$) so that the probability that there is at least one 1 in the string is at least 0.7?
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \pagebreak
+    %7
+    \item The probability that a Netflix user likes a movie $M_i$ from the ``Tearjerker'' genre, given that they like the Tearjerker genre, is $p_i$. The probability that a user likes $M_i$ given that they \textbf{do not like} the Tearjerker genre, is $q_i$. Of all Netflix users, 60\% like the Tearjerker genre. Assume that, \textbf{conditioned} on knowing a user's preference for the genre (either liking the genre or not liking it), liking movie $M_1$, $M_2$ and $M_3$ are \textbf{independent} events. Express all your answers in terms of $q$s and $p$s. What is the probability:
+    \begin{enumerate}
+        \item That a user likes all three movies $M_1$, $M_2$ \textbf{and} $M_3$ given that they like the Tearjerker genre?
+        \item That they like at least one movie $M_1$, $M_2$ \textbf{or} $M_3$ given that they like the Tearjerker genre?
+        \item That they like the Tearjerker genre given that they like $M_1$, $M_2$ \textbf{and} $M_3$?
+    \end{enumerate}
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \pagebreak
+    %8
+    \textbf{Program Analysis}
+    \item Suppose we want to write an algorithm \texttt{fairRandom} for randomly generating a 0 or a 1 with equal probability (= 0.5). Unfortunately, all we have available to us is a function:
+    \begin{minted}{python}
+        int unknownRandom();
+    \end{minted}
+    that randomly generates bits, where on each call a 1 is returned with some unknown probability $p$ that need not be equal to 0.5 (and a 0 is returned with probability $1-p$). Consider the following algorithm for \texttt{fairRandom}:
+    \begin{minted}{python}
+    def fairRandom():
+        while True:
+        r1 = unknownRandom()
+        r2 = unknownRandom()
+        if (r1 != r2): break
+        return r2
+    \end{minted}
+    \begin{enumerate}
+        \item Show mathematically that \texttt{fairRandom} does indeed return a 0 or a 1 with equal probability.
+        \item Say we want to simplify the function, so we write the \texttt{simpleRandom} function below. Would the \texttt{simpleRandom} function also generate 0's and 1's with equal probability? Explain why or why not. Determine P(\texttt{simpleRandom} returns 1) in terms of $p$.
+        \begin{minted}{python}
+        int simpleRandom() {
+            r1 = unknownRandom()
+            while True:
+                r2 = unknownRandom()
+                if (r1 != r2): break
+                r1 = r2
+            return r
+        \end{minted}
+    \end{enumerate}
+
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \pagebreak
+    %9 - Note: At this point the numbers are off by one because the official pset has two Problem 8's.
+    \textbf{Localization}\\
+    In this multi part problem you are going to solve key components for ``Localization'' which is the computer science problem of tracking the location of objects when there is uncertainty.\\
+    \item A robot, which only has a camera as a sensor, can either be in one of two locations: L1 or L2. The robot doesn't know exactly where it is and it represents this uncertainty by keeping track of two probabilities: P(L1) and P(L2). Based on all past observations, the robot thinks that there is a 0.8 probability it is in L1 and a 0.2 probability that it is in L2.\\ \\
+    The robot's vision algorithm detects a window, and although there is only a window in L2, it can't conclude that it is in fact in L2: its image recognition algorithm is not perfect. The probability of observing a window given there is no window at its location is 0.2 and the probability of observing a window given there is a window is 0.9. After incorporating the observation of a window, what is the robot's new values for P(L1) and P(L2)?
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \pagebreak
+    %10
+    \item \textbf{[Coding]} Your cell phone is constantly trying to keep track of where you are. At any given point in time, for all nearby locations, your phone stores a probability that you are in that location. Right now your phone believes that you are in one of 16 different locations arranged in a grid with the following probabilities (see the figure in the pset):\\ \\
+    Your phone connects to a known cell tower and records two bars of signal. For each grid location $L_i$ you know the probability of observing two bars from this particular tower, given that the cell phone is in location $L_i$ (see the figure on the right). That value is based on knowledge of the dynamics of this particular cell tower and stochasticity of signal strength.\\ \\
+    Example: the highlighted cell on the left figure means that you believed there was a 0.05 probability that the user was in the bottom right grid cell prior to observing the cell tower signal. The highlighted cell on the right figure means that you think the probability of observing two bars, given the user was in the bottom right grid cell, is 0.75.\\ \\
+    For each of the 16 location positions, calculate the new probability that the user is in each location given the cell tower observation. Write a program to calculate the probabilities. The matrices are provided on the website on the problem set \#2 page. Report the probabilities of all 16 cells and write a short explanation of your program. The grid in the left figure is stored in a file called ``prior.csv'' the grid in the right figure is stored in a file called ``conditional.csv''.
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \pagebreak
+    %11
+    \textbf{DNA}
+    \item The color of a person's eyes is determined by a pair of eye-color genes, as follows:
+    \begin{itemize}
+    \item if \textit{both} of the eye-color genes are blue-eyed genes, then the person will have blue eyes
+    \item if \textit{one or more} of the genes is a brown-eyed gene, then the person will have brown eyes
+    \end{itemize}
+    A newborn child independently receives one eye-color gene from each of its parents, and the gene it receives from a parent is equally likely to be either of the two eye-color genes of that parent. Suppose William and both of his parents have brown eyes, but William's sister (Claire) has blue eyes. (We assume that blue and brown are the only eye-color genes.)
+    \begin{enumerate}
+        \item What is the probability that William possesses a blue-eyed gene?
+        \item Suppose that William's wife has blue eyes. What is the probability that their first child will have blue eyes?
+        \item Still assuming that William's wife has blue eyes, if their first child had brown eyes, what is the probability that their next child will also have brown eyes?
+    \end{enumerate}
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \pagebreak
+    %12
+    \item Your colleagues in a comp-bio lab have sequenced DNA from a large population in order to understand how a gene ($G$) influences two particular traits ($T_1$ and $T_2$). They find that P($G$) = 0.6, P($T_1|G$) = 0.8 and P($T_2|G$) = 0.9. They also observe that if a subject does not have the gene, they express neither $T_1$ nor $T_2$. The probability of a patient having both $T_1$ and $T_2$ given that they have the gene is 0.72
+    \begin{enumerate}
+        \item Are $T_1$ and $T_2$ conditionally independent given $G$?
+        \item Are $T_1$ and $T_2$ conditionally independent given $G^C$?
+        \item What is P($T_1$)? What is P($T_2$)?
+        \item Are $T_1$ and $T_2$ independent?
+    \end{enumerate}
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \pagebreak
+    %13
+    \item \textbf{[Coding]} After the Ebola outbreak of 2015 there was an urgent need to learn more about the virus. You have been asked to uncover how a particular group of bat genes impact an important trait: whether the bat can carry Ebola. Nobody knows the underlying mechanism -- it is up to you to hypothesize what is going on. For 100,000 independently sampled bats you have collected data of whether or not five genes are expressed, and whether or not the bat can carry Ebola. If a gene is expressed it can affect both the probability of other genes being expressed and the probability of the trait being expressed. You can find the data in a file called ``bats.csv''. Each row in the file corresponds to \textbf{one bat} and has 6 Booleans:
+    \begin{itemize}
+        \item Boolean 1: Whether the 1st gene is expressed in the bat ($G_1$)
+        \item Boolean 2: Whether the 2nd gene is expressed in the bat ($G_2$)\\ $\dots$
+        \item Boolean 5: Whether the 5th gene is expressed in the bat ($G_5$)
+        \item Boolean 6: Whether the trait is expressed in the bat, eg the bat can carry Ebola ($T$).
+    \end{itemize}
+    Write a program to analyze the data you have collected. Report the following:
+    \begin{enumerate}
+        \item What is the probability of the trait being expressed P($T$)?
+        \item For each gene $i$ calculate and report P($G_i$).
+        \item For each gene $i$ decide whether or not you think that is would be reasonable to assume that $G_i$ is independent of $T$. Support your argument with numbers. Remember that our probabilities are based on 100,000 bats, not infinite bats, and are therefore just estimates of the true probabilities.
+        \item For each gene $i$ that is not assumed to be independent of T, calculate P($T | G_i$).
+        \item Give your best interpretation of the results from (a) to (d).
+        \item For extra credit try and find conditional independence relationships between the genes and the trait. Incorporate this information to improve your hypothesis of how the five genes relate to whether or not a bat can carry Ebola.
+    \end{enumerate}
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    
+\end{enumerate}
+
+\end{document}

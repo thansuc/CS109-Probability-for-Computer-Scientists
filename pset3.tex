@@ -1,0 +1,390 @@
+\documentclass[12pt]{article}
+
+% these are some useful packages. these add functionality to your document
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}  % math symbols
+\usepackage{mathdots}
+\usepackage[pdftex]{graphicx}
+\usepackage{fancyhdr}
+%\usepackage[margin=1in]{geometry}
+\usepackage{multicol}
+\usepackage{bm}
+\usepackage{listings}
+\PassOptionsToPackage{usenames,dvipsnames}{color}  %% Allow color names
+\usepackage{pdfpages}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+\usepackage{framed}
+\usepackage{wasysym}
+\usepackage[thinlines]{easytable}
+\usepackage{wrapfig}  % in case you want to use a figure
+\usepackage{hyperref} % add hyper links
+\usepackage{minted}
+
+% This package controls the margins of the page.
+\usepackage[top=1in, bottom=1in, left=0.7in, right=0.7in]{geometry}
+
+\usepackage{multicol} % in case you want to use multiple columns
+\setlength{\columnsep}{0.1pc}
+
+% document headers!
+\title{CS 109: Introduction to Probability for Computer Scientists\\Problem Set \#3}
+\author{\Large{author}} % Replace with your own name!!!
+\date{\Large{\today}} % today does the right thing
+
+\lhead{author} % Replace with your own name!!!
+\chead{Problem Set \#3}
+\rhead{\today}
+
+\newcommand{\abs}[1]{\lvert #1 \rvert}
+\newcommand{\absfit}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\eval}[3]{\left[#1\right]_{#2}^{#3}}
+\renewcommand{\(}{\left(}
+\renewcommand{\)}{\right)}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\pd}[1]{\frac{\partial}{\partial #1}}
+\newcommand{\inner}[1]{\langle#1\rangle}
+\newcommand{\cond}{\bigg|}
+\newcommand{\rank}[1]{\mathbf{rank}(#1)}
+\newcommand{\range}[1]{\mathbf{range}(#1)}
+\newcommand{\nullsp}[1]{\mathbf{null}(#1)}
+\newcommand{\repr}[1]{\left\langle#1\right\rangle}
+
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Tr}{\mathbf{Tr}}
+\DeclareMathOperator{\diag}{\mathbf{diag}}
+\DeclareMathOperator{\dist}{\mathbf{dist}}
+\DeclareMathOperator{\prob}{\mathbf{prob}}
+\DeclareMathOperator{\dom}{\mathbf{dom}}
+\DeclareMathOperator{\E}{\mathbf{E}}
+\DeclareMathOperator{\R}{\mathbb{R}}
+\DeclareMathOperator{\var}{\mathbf{var}}
+\DeclareMathOperator{\quartile}{\mathbf{quartile}}
+\DeclareMathOperator{\conv}{\mathbf{conv}}
+\DeclareMathOperator{\VC}{VC}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\Ber}{Bernoulli}
+\DeclareMathOperator{\NP}{\mathbf{NP}}
+\DeclareMathOperator{\coNP}{\mathbf{coNP}}
+\DeclareMathOperator{\TIME}{\mathsf{TIME}}
+\DeclareMathOperator{\polytime}{\mathbf{P}}
+\DeclareMathOperator{\PH}{\mathbf{PH}}
+\DeclareMathOperator{\SIZE}{\mathbf{SIZE}}
+\DeclareMathOperator{\ATIME}{\mathbf{ATIME}}
+\DeclareMathOperator{\SPACE}{\mathbf{SPACE}}
+\DeclareMathOperator{\ASPACE}{\mathbf{ASPACE}}
+\DeclareMathOperator{\NSPACE}{\mathbf{NSPACE}}
+\DeclareMathOperator{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\N}{\mathbb{N}}
+\DeclareMathOperator{\EXP}{\mathbf{EXP}}
+\DeclareMathOperator{\NEXP}{\mathbf{NEXP}}
+\DeclareMathOperator{\NTIME}{\mathbf{NTIME}}
+\DeclareMathOperator{\DTIME}{\mathbf{DTIME}}
+\DeclareMathOperator{\poly}{poly}
+\DeclareMathOperator{\BPP}{\mathbf{BPP}}
+\DeclareMathOperator{\ZPP}{\mathbf{ZPP}}
+\DeclareMathOperator{\RP}{\mathbf{RP}}
+\DeclareMathOperator{\coRP}{\mathbf{coRP}}
+\DeclareMathOperator{\BPL}{\mathbf{BPL}}
+\DeclareMathOperator{\IP}{\mathbf{IP}}
+\DeclareMathOperator{\PSPACE}{\mathbf{PSPACE}}
+\DeclareMathOperator{\NPSPACE}{\mathbf{NPSPACE}}
+\DeclareMathOperator{\SAT}{\mathsf{SAT}}
+\DeclareMathOperator{\NL}{\mathbf{NL}}
+\DeclareMathOperator{\PCP}{\mathbf{PCP}}
+\DeclareMathOperator{\PP}{\mathbf{PP}}
+\DeclareMathOperator{\cost}{cost}
+\let\Pr\relax
+\DeclareMathOperator*{\Pr}{\mathbf{Pr}}
+
+\theoremstyle{definition}
+\newtheorem*{answer}{Answer}
+
+\definecolor{shadecolor}{gray}{0.95}
+
+\setlength{\parindent}{0pt}
+
+\pagestyle{fancy}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+% begin the document
+\begin{document}
+
+% actually insert the title.
+\maketitle
+ 
+
+\textbf{\large{Warmup}}
+\begin{enumerate}
+\large{
+    %1
+    \item In the two weeks we have covered a set of random variables. Understanding the \textit{process} that leads to these random variables is a great way to gain familiarity for what they mean. For each random variable, write a function that simulates its generation process. Your function should return a number. The only probability function that you may use when coding your solution is \texttt{random()}: a function that generates a uniform random in the range [0, 1]. Submit your code, either python or psuedocode.: We include a solution to (a):
+
+    \begin{enumerate}
+        \item X $\sim$ Ber($p$ = 0.4)\\
+        1 or 0 to indicate whether or not an underlying event was ``successful''.
+\begin{minted}{python}
+def simulateBernoulli(p = 0.4):
+    if random() < p:
+        return 1
+    return 0
+\end{minted}
+        \item X $\sim$ Bin($n$ = 20, $p$ = 0.4)\\
+        The number of successes after 20 independent experiments.
+        \item X $\sim$ Geo($p$ = 0.03)\\
+        The number of trials until the first success.
+        \item X $\sim$ NegBin($k$ = 5, $p$ = 0.03)\\
+        The number of trials until 5 successes.
+        \item X $\sim$ Poi($\lambda$ = 3.1) The number of events in a minute, where the historical rate is 3.1 events per min.\\ \textit{hint}: break the minute down into 60,000 ms events like we did in lecture.
+        \item X $\sim$ Exp($\lambda$ = 3.1)\\
+        The amount of time until the next event, where the historical rate is 3.1 events per min.\\
+        \textit{hint}: again think of an event for each ms.
+    \end{enumerate}
+    If you are trying to understand probability mass functions, you may optionally try to visualize one via your simulations. Run one of your simulations 100,000 times and plot a histogram of return values.
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \pagebreak
+    %2
+    \item Lyft line gets 2 requests per 5 mins, on average, for a particular route. A user requests the route and Lyft commits a car to take her. All users who request the route in the next five minutes will be added to the car --- as long as the car has space. The car can fit up to three users. Lyft will make \$6 for each user in the car (the revenue) minus \$7 (the operating cost). How much does Lyft expect to make from this trip?
+    \begin{enumerate}
+        \item How much does Lyft expect to make from this trip?
+        \item Lyft has one space left in the car and wants to wait to get another user. What is the probability that another user will make a request in the next 15 seconds?
+    \end{enumerate}
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \pagebreak
+    %3
+    \item Suppose it takes at least 9 votes from a 12-member jury to convict a defendant. Suppose also that the probability that a juror votes that an actually guilty person is innocent is 0.25, whereas the probability that the juror votes that an actually innocent person is guilty is 0.15. If each juror acts independently and if 70\% of defendants are actually guilty, find the probability that the jury renders a correct decision. Also determine the percentage of defendants found guilty by the jury.
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \pagebreak
+    %4
+    \item Say there are $k$ buckets in a hash table. Each new string added to the table is hashed to bucket $i$ with probability $p_i$, where $\displaystyle \sum_{i=1}^{k} p_i = 1$. If $n$ strings are hashed into the table, find the expected number of buckets that have at least one string hashed to them. (Hint: Let $X_i$ be a binary variable that has the value 1 when there is at least one string hashed to bucket $i$ after the $n$ strings are added to the table (and 0 otherwise). Compute $E[\sum_{i=1}^k X_i]$).
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \pagebreak
+    %5
+    \item Let X be a continuous random variable with probability density function:
+    \[
+    f(x) =
+    \begin{cases} 
+        c(2-2x^2) & -1 < x < 1 \\
+        0 & \text{otherwise} \\
+    \end{cases}
+    \]
+    \begin{enumerate}
+        \item What is the value of $c$?
+        \item What is the cumulative distribution function (CDF) of X?
+        \item What is E[X]?
+    \end{enumerate}
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \pagebreak
+    %6
+    \item Scores on the SAT maths (out of 800) are normally distributed with a mean of 500 and a standard deviation of 100.
+    \begin{enumerate}
+        \item What fraction of students receive a score within 1.5 standard deviations of the mean?
+        \item Irina scores 750. What percent of students scored lower than 750? (Irina's percentile)
+    \end{enumerate}
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \pagebreak
+    %7
+    \item Let $X$ be a Normal random variable with $\mu$ = 6. If P($X$ > 9) = 0.3, what is the approximate value of Var($X$)?
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \pagebreak
+    %8
+    \item The Huffmeister floodplane in Houston has historically been estimated to flood at an average rate of 1 flood every 500 years. A flood plane with that rate of flooding is called a ``500 year'' floodplane.
+    \begin{enumerate}
+        \item What is the probability of observing at least 3 floods in 500 years?
+        \item What is the probability that a flood will occur within the next 100 years?
+        \item What is the expected number of years until the next flood?
+    \end{enumerate}
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \pagebreak
+    %9
+    \item You are testing software and discover that your program has a non-deterministic bug that causes catastrophic failure. Your program was tested for 400 hours and the bug occurred \textbf{twice}.
+    \begin{enumerate}
+        \item Each user uses your program to complete a three hour long task. If the hindenbug manifests they will immediately stop their work. What is the probability that the bug manifests for a given user?
+        \item Your program is used by one million users. Use a normal approximation to estimate the probability that more than 10000 users experience the bug. Use your answer from part (a).
+    \end{enumerate}
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \pagebreak
+    %10
+    \textbf{Dithering}
+    \item \textbf{[Coding]} Two pseudo random number generators are used to simulate a sequence 300 independent flips of a fair coin (T means a tails was flipped, H means a head was flipped). Below are the two sequences (from the two random generators). Which one is a better random generator? Make an argument that is justified with probabilities calculated on the sequences:\\ \\
+    Sequence 1:\\
+    \texttt{TTHHTHTTHTTTHTTTHTTTHTTHTHHTHHTHTHHTTTHHTHTHTTHTHHTTHTHHT\\
+    HTTTHHTTHHTTHHHTHHTHTTHTHTTHHTHHHTTHTHTTTHHTTHTHTHTHTHTT\\
+    HTHTHHHTTHTHTHHTHHHTHTHTTHTTHHTHTHTHTTHHTTHTHTTHHHTHTHTH\\
+    TTHTTHHTTHTHHTHHHTTHHTHTTHTHTHTHTHTHTHHHTHTHTHTTHTHHTHTH\\
+    TTHTTTHHTHTTTHTHHTHHHHTTTHHTHTHTHTHHHTTHHTHTTTHTHHTHTHTH\\
+    HTHTTHTTHTHHTHTHTTT}\\ \\
+    Sequence 2:\\
+    \texttt{HTHHHTHTTHHTTTTTTTTHHHTTTHHTTTTHHTTHHHTTHTHTTTTTTHTHTTTTH\\
+    HHHTHTHTTHTTTHTTHTTTTHTHHTHHHHTTTTTHHHHTHHHTTTTHTHTTHHHH\\
+    THHHHHHHHTTHHTHHTHHHHHHHTTHTHTTTHHTTTTHTHHTTHTTHTHTHTTHH\\
+    HHHTTHTTTHTHTHHTTTTHTTTTTHHTHTHHHHTTTTHTHHHHHHTHTHTHTHHH\\
+    THTTHHHTHHHHHHTHHHTHTTTHHHTTTHHTHTTHHTHHHTHTTHTTHTTTHHTH\\
+    THTTTTHTHTHTTHTHTHT}\\ \\
+    The sequences are provided in the \texttt{datasets} zip as two files\\
+    \texttt{ditherSequence1.txt} and \texttt{ditherSequence2.txt}.
+
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \pagebreak
+    %11
+    \textbf{Analysis of Bloom Filters}
+    \item A Bloom filter is a probabilistic implementation of the \textit{set} data structure, an unordered collection of unique objects. In this problem we are going to look at it theoretically. Our Bloom filter uses 3 different independent hash functions $H_1$, $H_2$, $H_3$ that each take any string as input and each return an index into a bit-array of length $n$. Each index is equally likely for each hash function. To add a string into the set, feed it to each of the 3 hash functions to get 3 array positions. Set the bits at all these positions to 1.\\ \\
+    For example, consider this bit-array of length $n$ = 10. Values in the bit-array are initially zero:
+    \begin{center}
+        \begin{tabular}{r|c|c|c|c|c|c|c|c|c|c|}
+        \multicolumn{1}{r}{Index:}
+         & \multicolumn{1}{c}{0}
+         & \multicolumn{1}{c}{1}
+         & \multicolumn{1}{c}{2} 
+         & \multicolumn{1}{c}{3}
+         & \multicolumn{1}{c}{4}
+         & \multicolumn{1}{c}{5} 
+         & \multicolumn{1}{c}{6}
+         & \multicolumn{1}{c}{7}
+         & \multicolumn{1}{c}{8} 
+         & \multicolumn{1}{c}{9} \\
+        \cline{2-11}
+        Value: & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+        \cline{2-11}
+        \end{tabular}
+    \end{center}
+    After adding a string ``pie'' where $H_1$(``pie'') = 4, $H_2$(``pie'') = 7 and $H_3$(``pie'') = 8, the bits at index {4, 7, 8} are set to be 1: 
+    \begin{center}
+        \begin{tabular}{r|c|c|c|c|c|c|c|c|c|c|}
+        \multicolumn{1}{r}{Index:}
+         & \multicolumn{1}{c}{0}
+         & \multicolumn{1}{c}{1}
+         & \multicolumn{1}{c}{2} 
+         & \multicolumn{1}{c}{3}
+         & \multicolumn{1}{c}{4}
+         & \multicolumn{1}{c}{5} 
+         & \multicolumn{1}{c}{6}
+         & \multicolumn{1}{c}{7}
+         & \multicolumn{1}{c}{8} 
+         & \multicolumn{1}{c}{9} \\
+        \cline{2-11}
+        Value: & 0 & 0 & 0 & 0 & \textbf{1} & 0 & 0 & \textbf{1} & \textbf{1} & 0 \\
+        \cline{2-11}
+        \end{tabular}
+    \end{center}
+    
+    Bits are never switched back to 0. Consider a Bloom filter with $n$ = 9, 000 buckets. You have added $m$ = 1,000 strings to the Bloom filter.
+    \begin{enumerate}
+        \item What is the (approximated) probability that the first bucket has 0 strings hashed to it?\\ \\
+        \setcounter{enumii}{2}
+        To \textit{check} whether a string is in the set, feed it to each of the 3 hash functions to get 3 array positions. If any of the bits at these positions is 0, the element is not in the set. If all bits at these positions are 1, the string \textit{may} be in the set; but it could be that those bits are 1 because some of the other strings hashed to the same values, so one needs to check a more expensive data structure to tell whether the string is present. You may assume that the value of one bucket is independent of the value of all others.\\
+        \item What is the probability that a string which has \textit{not} previously been added to the set will be misidentified as in the set. That is, what is the probability that the bits at all of its hash positions are already 1? Use approximations where appropriate.
+        \item Our bloom filter uses three hash functions. Was that necessary? Repeat your calculation in assuming that we only used a single hash function (not 3).
+    \end{enumerate}
+    
+    (Chrome uses a Bloom Filter to keep track of malicious URLs. Questions such as this allow us to compute appropriate sizes for hash tables in order to get good performance with high probability in applications where we have a ballpark idea of the number of elements that will be hashed into the table).
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \pagebreak
+    %12
+    \textbf{Global Warming}
+    \item This summer (Jun 2018) the concentration of CO$_2$ in the atmosphere was 411 parts per million (ppm) which is substantially higher than the pre-industrial concentration: 275 ppm. CO$_2$ is a greenhouse gas and as such increased CO$_2$ corresponds to a warmer planet.\\ \\
+    Absent some pretty significant policy changes we will reach a point within the next 50 years (e.g. well within your lifetime) where the CO$_2$ in the atmosphere will be double the pre-industrial level. In this problem we are going to explore the question: what will happen to the global temperature if atmospheric CO$_2$ doubles?\\ \\
+    The measure, in degrees Celsius, of how much the global average surface temperature will change (at the point of equilibrium) after a doubling of atmospheric CO$_2$ is called ``Climate Sensitivity.'' Since the earth is a complicated ecosystem climate scientists model S as a random variable. The IPPC Fourth Assessment Report had a summary of 10 scientific studies that estimated the PDF for Climate Sensitivity (S): (see the actual problem set for figure)\\ \\
+    In this problem we are going to treat S as part-discrete and part-continuous. For values of S less than 7.5, we are going to model sensitivity as a discrete random variable with PMF based on the average of estimates from the studies in the IPCC report. Here is the PMF for S in the range 0 through 7.5:
+    \begin{center}
+        \begin{tabular}{lcccccccc}
+        Sensitivity, S (degrees C)
+         & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7\\
+        Expert Probability
+         & 0.00 & 0.11 & 0.26 & 0.22 & 0.16 & 0.09 & 0.06 & 0.04\\
+        \end{tabular}
+    \end{center}
+    The IPCC fifth assessment report notes that there is a non-negligible chance of S being greater than 7.5 degrees but didn't go into detail about probabilities. In the paper ``Fat-Tailed Uncertainty in the Economics of Catastrophic Climate Change'' Martin Weitzman discusses how different models for the PDF of Climate Sensitivity (S) for large values of S have wildly different policy implications.\\ \\
+    For values of S greater than 7.5 degrees Celsius, we are going to model S as a continuous random variable. Consider two different assumptions for S when it is greater than 7.5: a fat tailed distribution ($f_1$) and a thin tailed distribution ($f_2$):
+    \[
+        f_1(x) = \frac{K}{x}\ \text{s.t.}\ 7.5 < x < 30
+    \]
+    \[
+        f_2(x) = \frac{K}{x^3}\ \text{s.t.}\ 7.5 < x< 30
+    \]
+    
+    For this problem assume that the probability that S is greater than 30 degrees Celsius is 0.
+    \begin{enumerate}
+        \item Estimate the probability that Climate Sensitivity is greater than 7.5 degrees Celsius.
+        \item Calculate the value of K for both $f_1$ and $f_2$.
+        \item It is estimated that if temperatures rise more than 10 degrees Celsius, the ice on Greenland will melt. Estimate the probability that S is greater than 10 under both the $f_1$ and $f_2$ assumptions.
+        \item Calculate the expectation of S under both the $f_1$ and $f_2$ assumptions.
+        \item Let R = S$^2$ be a crude approximation of the cost to society that results from S. Calculate E[R] under both the $f_1$ and $f_2$ assumptions.
+    \end{enumerate}
+    Notes: (1) Both $f_1$ and $f_2$ are ``Power law distributions'' which are continuous forms of the Zipf distribution we talked about in class. (2) As mentioned in class, calculating expectations for a variable that is part discrete and part continuous is as simple as: use the discrete formula for the discrete part and the continuous formula for the continuous part.
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    
+}
+\end{enumerate}
+
+
+\end{document}

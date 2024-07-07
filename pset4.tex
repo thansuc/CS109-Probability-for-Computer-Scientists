@@ -1,0 +1,411 @@
+% This is a comment!
+
+% This is the document declaration (with default fontsize)
+\documentclass[12pt]{article}
+
+% these are some useful packages. these add functionality to your document
+
+\usepackage{booktabs}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}  % math symbols
+\usepackage{mathdots}
+\usepackage[pdftex]{graphicx}
+\usepackage{fancyhdr}
+%\usepackage[margin=1in]{geometry}
+\usepackage{multicol}
+\usepackage{bm}
+\usepackage{listings}
+\PassOptionsToPackage{usenames,dvipsnames}{color}  %% Allow color names
+\usepackage{pdfpages}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+\usepackage{framed}
+\usepackage{wasysym}
+\usepackage[thinlines]{easytable}
+\usepackage{wrapfig}  % in case you want to use a figure
+\usepackage{hyperref} % add hyper links
+\usepackage{minted}
+
+% This package controls the margins of the page.
+\usepackage[top=1in, bottom=1in, left=0.8in, right=1in]{geometry}
+
+\usepackage{multicol} % in case you want to use multiple columns
+\setlength{\columnsep}{0.1pc}
+
+% document headers!
+\title{CS 109: Introduction to Probability for Computer Scientists\\Problem Set \#4}
+\author{\Large{author}} % Replace with your own name!!!
+\date{\Large{\today}} % today does the right thing
+
+\lhead{author} % Replace with your own name!!!
+\chead{Problem Set \#4}
+\rhead{\today}
+
+\newcommand{\abs}[1]{\lvert #1 \rvert}
+\newcommand{\absfit}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\eval}[3]{\left[#1\right]_{#2}^{#3}}
+\renewcommand{\(}{\left(}
+\renewcommand{\)}{\right)}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\pd}[1]{\frac{\partial}{\partial #1}}
+\newcommand{\inner}[1]{\langle#1\rangle}
+\newcommand{\cond}{\bigg|}
+\newcommand{\rank}[1]{\mathbf{rank}(#1)}
+\newcommand{\range}[1]{\mathbf{range}(#1)}
+\newcommand{\nullsp}[1]{\mathbf{null}(#1)}
+\newcommand{\repr}[1]{\left\langle#1\right\rangle}
+
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Tr}{\mathbf{Tr}}
+\DeclareMathOperator{\diag}{\mathbf{diag}}
+\DeclareMathOperator{\dist}{\mathbf{dist}}
+\DeclareMathOperator{\prob}{\mathbf{prob}}
+\DeclareMathOperator{\dom}{\mathbf{dom}}
+\DeclareMathOperator{\E}{\mathbf{E}}
+\DeclareMathOperator{\R}{\mathbb{R}}
+\DeclareMathOperator{\var}{\mathbf{var}}
+\DeclareMathOperator{\quartile}{\mathbf{quartile}}
+\DeclareMathOperator{\conv}{\mathbf{conv}}
+\DeclareMathOperator{\VC}{VC}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\Ber}{Bernoulli}
+\DeclareMathOperator{\NP}{\mathbf{NP}}
+\DeclareMathOperator{\coNP}{\mathbf{coNP}}
+\DeclareMathOperator{\TIME}{\mathsf{TIME}}
+\DeclareMathOperator{\polytime}{\mathbf{P}}
+\DeclareMathOperator{\PH}{\mathbf{PH}}
+\DeclareMathOperator{\SIZE}{\mathbf{SIZE}}
+\DeclareMathOperator{\ATIME}{\mathbf{ATIME}}
+\DeclareMathOperator{\SPACE}{\mathbf{SPACE}}
+\DeclareMathOperator{\ASPACE}{\mathbf{ASPACE}}
+\DeclareMathOperator{\NSPACE}{\mathbf{NSPACE}}
+\DeclareMathOperator{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\N}{\mathbb{N}}
+\DeclareMathOperator{\EXP}{\mathbf{EXP}}
+\DeclareMathOperator{\NEXP}{\mathbf{NEXP}}
+\DeclareMathOperator{\NTIME}{\mathbf{NTIME}}
+\DeclareMathOperator{\DTIME}{\mathbf{DTIME}}
+\DeclareMathOperator{\poly}{poly}
+\DeclareMathOperator{\BPP}{\mathbf{BPP}}
+\DeclareMathOperator{\ZPP}{\mathbf{ZPP}}
+\DeclareMathOperator{\RP}{\mathbf{RP}}
+\DeclareMathOperator{\coRP}{\mathbf{coRP}}
+\DeclareMathOperator{\BPL}{\mathbf{BPL}}
+\DeclareMathOperator{\IP}{\mathbf{IP}}
+\DeclareMathOperator{\PSPACE}{\mathbf{PSPACE}}
+\DeclareMathOperator{\NPSPACE}{\mathbf{NPSPACE}}
+\DeclareMathOperator{\SAT}{\mathsf{SAT}}
+\DeclareMathOperator{\NL}{\mathbf{NL}}
+\DeclareMathOperator{\PCP}{\mathbf{PCP}}
+\DeclareMathOperator{\PP}{\mathbf{PP}}
+\DeclareMathOperator{\cost}{cost}
+\let\Pr\relax
+\DeclareMathOperator*{\Pr}{\mathbf{Pr}}
+
+\theoremstyle{definition}
+\newtheorem*{answer}{Answer}
+
+\definecolor{shadecolor}{gray}{0.95}
+
+\setlength{\parindent}{0pt}
+
+\pagestyle{fancy}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+% begin the document
+\begin{document}
+
+% actually insert the title.
+\maketitle
+  
+\begin{enumerate}
+\large{
+    %1
+    \item On average 5.5 users sign-up for an on-line social networking site each minute. What is the probability that:
+    \begin{enumerate}
+        \item More than 7 users will sign-up for the social networking site in the next minute?
+        \item More than 13 users will sign-up for the social networking site in the next 2 minutes?
+        \item More than 15 users will sign-up for the social networking site in the next 3 minutes?
+    \end{enumerate}
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \newpage
+    %2
+    \item The joint probability density function of continuous random variables X and Y is given by:
+    \[
+    f_{X,Y}(x,y) = \frac{4y}{x}\ \text{where}\ 0 < y < x < 1
+    \]
+    \begin{enumerate}
+        \item What is the marginal density function of X?
+        \item What is the marginal density function of Y?
+        \item What is E[X]?
+    \end{enumerate}
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \newpage
+    %3
+    \item The median of a continuous random variable having cumulative distribution function F is the value m such that F($m$) = 0.5. That is, a random variable is just as likely to be larger than its median as it is to be smaller. Find the median of X (in terms of the respective distribution parameters) in each case below.
+    \begin{enumerate}
+        \item X $\sim$ Uni(a, b)
+        \item X $\sim$ N($\mu, \sigma^2$)
+        \item X $\sim$ Exp($\lambda$)
+    \end{enumerate}
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \newpage
+    %4
+    \item You are tracking the distance to a satellite. An instrument reports that the satellite is 100 a.u. from Earth. Before you had observed the instrument reading, your belief distribution for the distance D of the satellite was a Gaussian D $\sim$ N($\mu = 98, \sigma^2 = 16$). The instrument gives a reading that Gaussian with mean that is the true distance and variance 4.
+    \begin{enumerate}
+        \item What is the PDF of your prior belief of the true distance of the satellite?
+        \item What is the probability density of seeing an observation of 100 a.u. from your instrument, given that the true distance of the satellite is equal to $t$?
+        \item What is the PDF of your posterior belief (after observing the instrument reading) of the true distance of the satellite? You may leave a constant in your PDF and you do not need to simplify the PDF.
+    \end{enumerate}
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \newpage
+    %5
+    \item Let X, Y, and Z be independent random variables, where X $\sim$ N($\mu_1$ $\sigma_1^2$), Y $\sim$ N($\mu_2$, $\sigma_2^2$), and Z $\sim$ N($\mu_3$, $\sigma_3^2$).
+    \begin{enumerate}
+        \item Let A = X + Y. What is the distribution of A?
+        \item Let B = 5X + 2. What is the distribution of B?
+        \item Let C = $a$X - $b$Y + $c^2$Z, where $a$, $b$, and $c$ are real-valued constants. What is the distribution (along with parameter values) for C? Show how you derived your answer.
+    \end{enumerate}
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \newpage
+    %6
+    \item An artificial intelligence algorithm is being used to make a binary prediction ($G$ for guess) for whether a person will repay a microloan. An important question to ask: is the algorithm fair with respect to a binary demographic ($D$ for demographic)? To answer this question we are going to analyze the historical predictions of the algorithm and compare the predictions to the true outcome ($T$ for truth) and the growing field of algorithmic fairness.
+    Consider the following joint probability table from the history of the algorithm's predictions:
+
+    \begin{table}[h!]
+        \centering
+        \begin{tabular}{lcccc}\toprule
+            &\multicolumn{2}{c}{\textbf{D = 0}}&\multicolumn{2}{c}{\textbf{D = 1}}
+            \\\cmidrule(r){2-3}\cmidrule(r){4-5}   
+            &G = 0&G = 1&G = 0&G = 1\\\midrule
+            T = 0    
+            & 0.21 
+            & 0.32
+            & 0.01 
+            & 0.01\\
+            T = 1   
+            & 0.07
+            & 0.28
+            & 0.02
+            & 0.08
+            \\\bottomrule
+        \end{tabular}
+    \end{table}
+    \begin{center}
+    \vspace{-4mm}
+        $D$: is the demographic of an individual (binary)\\
+    $G$: is the  prediction made by the algorithm (binary)\\
+    $T$: is the true  result (binary)\\
+    \end{center}
+
+
+    Recall that cell in the joint table where $( A = i, C = j, Y = k)$ is the  probability, $P(A = i, C = j, Y = k)$. For all questions, justify your answer. You may leave your answers with terms that could be input into a calculator. 
+
+    \begin{enumerate}[label=\alph*.]
+    
+    \item What is $P(D = 1)?$
+    
+    
+    \item What is $P(G =1 | D = 1)$?
+    
+    
+    \item Fairness definition \#1: Parity. 
+    An algorithm satisfies ``parity" if the probability that the algorithm makes a \emph{positive prediction} ($G=1$) is the same regardless of the demographic variable. Does this algorithm satisfy parity? 
+
+
+
+
+    \item Fairness definition \#2: Calibration. 
+    An algorithm satisfies ``calibration" if the probability that the algorithm is \emph{correct} ($G = T$) is the same regardless of demographics. Does this algorithm satisfy calibration? 
+    
+    
+    \item Fairness definition \#3: Equality of odds. 
+    An algorithm satisfies ``equality of odds" if the probability that the algorithm \emph{predicts a positive outcome} ($G=1$) is the same regardless of demographics \emph{given} that the outcome will occur ($T=1$). Does this algorithm satisfy equality of odds?
+
+
+    \end{enumerate}
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \newpage
+    %7
+    \item Recall the example of zero sum games for teams with ``ELO'' scores S$_1$ and S$_2$. When a game is played between the two teams they each sample an ability (A$_1$ and A$_2$ respectively) from a normal distribution with mean equal to the team's ELO score and constant variance. The variance is different for different types of games. For this problem we will use the GO rating variance of $\sigma^2$ = (2000/7)$^2$. In lecture we talked about how to calculate the probability that a team wins via sampling. In this problem we will work out a closed form calculation.
+    \begin{enumerate}
+        \item What is the probability distribution for the difference between A$_1$ and A$_2$?
+        \item A team wins if their sampled ability is larger. Come up with a closed form expression for the probability that team one wins.
+        \item The best human GO player in the world is Ke Jie with an ELO score of 3670. Alpha GO Zero is a computer with an ELO score of 5200. How many independent games would they have to play before the expected number of games that Ke wins is greater than or equal to 1?
+    \end{enumerate}
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    
+    \newpage
+    %8
+    \item Let X$_i$ = the number of weekly visitors to a web site in week $i$, where X$_i$ $\sim$ N(2200, 52900) for all $i$. Assume that all X$_i$ are independent of each other.
+    \begin{enumerate}
+        \item What is the probability that the total number of visitors to the web site in the next two weeks exceeds 5000?
+        \item What is the probability that the weekly number of visitors exceeds 2000 in at least 2 of the next 3 weeks?
+    \end{enumerate}
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \newpage
+    %9
+    \item A robot is located at the \underline{center} of a square world that is 10 kilometers on each side. A package is dropped off in the robot's world at a point (x, y) that is uniformly (continuously) distributed in the square. If the robot's starting location is designated to be (0, 0) and the robot can only move up/down/left/right parallel to the sides of the square, the distance the robot must travel to get to the package at point (x, y) is |x| + |y|. Let D = the distance the robot travels to get to the package. Compute E[D]. \textit{The distance calculation used in this problem is often called the ``L1 Norm'' and is a common metric for many problems.}
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \newpage
+    %10
+    \item You roll 6 dice. How much more likely is a roll with: [one 1, one 2, one 3, one 4, one 5, one 6] than a roll with six 6s? Think of your dice roll as a multinomial.
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \newpage
+    %11
+    \item Consider the following function, which simulates repeatedly rolling a 6-sided die (where each integer value from 1 to 6 is equally likely to be "rolled") until a value $\geq$ 3 is "rolled".
+
+    \begin{framed}
+    \begin{minted}{python}
+    def roll():
+      total = 0;
+      while (True):                    
+        # equally likely to return 1,...,6
+        roll = randomInteger(1, 6)
+        total += roll
+        # exit condition
+        if (roll >= 3) break           
+      return total
+    \end{minted}
+    \end{framed}
+    \begin{enumerate}[label=\alph*.]
+    \item Let X be the value returned by the function roll().  What is E[X]?
+
+
+    \item	Let Y be the number of times that the die is "rolled" (i.e., the number of times that randomInteger(1, 6) is called) in the function roll().  What is E[Y]?
+
+    \end{enumerate}
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \newpage
+    %12
+    \item Our ability to fight contageous diseases depends on our ability to model them. One person is exposed to llama-flu. The method below returns the number of individuals who will get infected.
+    
+    \begin{framed}
+    \begin{minted}{python}
+    # Get number of people infected by one individual
+    def numInfected():
+       # most people are immune to llama-flu
+       immune = bernoulli(p = 0.99) 
+       if immune: return 0
+       
+       # people who are not immune, spread the disease far
+       spread = 0
+       
+       # they make contact with k people (up to 100)
+       k = binomial(n = 100, p = 0.25)
+       for i in range(k)
+         spread += numInfected():
+         
+       # total infections should include this individual
+       return spread + 1
+    \end{minted}
+    \end{framed}
+    
+    What is the expected return value of \texttt{numInfected}?
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+
+    \newpage
+    %13
+    \textbf{Titanic Probabilities}
+    \item On April 15, 1912, the largest passenger liner ever made collided with an iceberg during her maiden voyage. When the Titanic sank it killed 1502 out of 2224 passengers and crew. This sensational tragedy shocked the international community and led to better safety regulations for ships. One of the reasons that the shipwreck resulted in such loss of life was that there were not enough lifeboats for the passengers and crew. Although there was some element of luck involved in surviving the sinking, some groups of people were more likely to survive than others. Write a program that reads the data file and finds the answers to the questions on the webpage: \url{cs109.stanford.edu/titanic.html}
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    \newpage
+    %14
+    \textbf{Biometric Keystrokes}
+    \item Did you know that computers can know who you are not, just by what you write, but also by how you write it? Coursera uses Biometric Keystroke signatures for plagiarism detection. If you can't write a sentence with the same statistical distribution of key press timings as in your previous work, they assume that it is not you who is sitting behind the computer. In this problem we provide you with three files:\\
+    \begin{description}
+        \item[personKeyTimingA.txt] has keystroke timing information for a user A writing a passage. The first column is the time in milliseconds (\textbf{\textit{since the start of writing}}) when the user hit each key. The second column is the key that the user hit.
+        \item[personKeyTimingB.txt] has keystroke timing information for a second user (user B) writing the same passage as the user A. Even though the content of the passage is the same \textit{the timing} of how the second user wrote the passage is different.
+        \item[email.txt] has keystroke timing information for an unknown user. We would like to know if the author of the email was user A or user B.
+    \end{description}
+    Let X and Y be random variables for the duration of time, in milliseconds, for users A and B (respectively) to type a key. Assume that each keystroke from a user has a duration that is an independent random variable with the same distribution.
+    \begin{enumerate}
+        \item Estimate E[X] and E[Y].
+        \item Estimate E[X$^2$] and E[Y$^2$].
+        \item Use your answers to part (a) and (b) and approximate X and Y as Normals with mean and variance that match their biometric data. Report both distributions.
+        \item Calculate the ratio of the probability that user A wrote the email over the probability that user B wrote the email. You don't need to submit code, but you should include the formula that you attempted to calculate and a few sentence description of how your code works.
+    \end{enumerate}
+    
+    \begin{shaded}
+    \begin{answer}
+    
+    \end{answer}
+    \end{shaded}
+    
+}
+\end{enumerate}
+
+
+\end{document}
